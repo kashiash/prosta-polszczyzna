@@ -1,76 +1,156 @@
-# Awesome Agent Skills — skille dla Claude Code
+# Prosta Polszczyzna — Skill dla asystentów AI
 
-Kolekcja skillów dla [Claude Code](https://claude.ai/code), które możesz zainstalować i używać w codziennej pracy.
+Skill do pisania tekstów po polsku tak, żeby odbiorca rozumiał je **przy pierwszym czytaniu**.
 
-Każdy skill to zestaw zasad i kontekstu, który Claude ładuje automatycznie, gdy wykryje odpowiedni typ zadania. Nie musisz nic pamiętać — model wie, kiedy skill jest potrzebny.
+Oparty na standardzie *Ustandaryzowane zasady prostego języka 2024* (Jasnopis + Fundacja Języka Polskiego + UAM + USz + POLONICUM UW) uzupełnionym o trzy zasady architektury tekstu: BLUF, Just-in-Time Context i Top-Down Bridge.
 
-## Dostępne skille
+**Autor:** [@kashiash](https://github.com/kashiash)  
+**Wersja:** 1.0.0  
+**Licencja:** MIT
 
-### `prosta-polszczyzna`
+---
 
-Skill do pisania polskich tekstów tak, żeby odbiorca rozumiał je **przy pierwszym czytaniu**.
+## Szybki start
 
-Włącza się automatycznie, gdy piszesz lub edytujesz dowolny tekst po polsku — e-maile, dokumentację, raporty, komunikaty UI, commit messages. Nie dotyczy prozy artystycznej ani poezji.
-
-**Co robi:**
-- Stosuje standard *Ustandaryzowane zasady prostego języka 2024*
-- Wymusza architekturę BLUF (wniosek na początku), Just-in-Time Context i Top-Down Bridge
-- Pilnuje długości zdań (≤ 20 słów), strony czynnej i braku imiesłowów `-ąc`
-- Eliminuje kancelaryzmy, archaizmy, kalki z angielskiego i puste formuły
-- Zawiera słownik 200+ zamienników słów, przykłady przepisanych zdań i checklist walidacji
-
-## Instalacja
-
-### Windows (PowerShell)
-
-```powershell
-cd prosta-polszczyzna
-.\install.ps1
-```
-
-### Mac / Linux (bash)
+### Instalacja do wszystkich wykrytych asystentów
 
 ```bash
-cd prosta-polszczyzna
-chmod +x install.sh
-./install.sh
+npx skills add https://github.com/kashiash/prosta-polszczyzna --skill prosta-polszczyzna --agent '*' -g -y
 ```
 
-Skill pojawi się w Claude Code po ponownym uruchomieniu aplikacji.
+### Instalacja do wybranego asystenta
+
+```bash
+# Claude Code
+npx skills add https://github.com/kashiash/prosta-polszczyzna --skill prosta-polszczyzna -g -a claude-code
+
+# Cursor
+npx skills add https://github.com/kashiash/prosta-polszczyzna --skill prosta-polszczyzna -g -a cursor
+
+# Kiro CLI
+npx skills add https://github.com/kashiash/prosta-polszczyzna --skill prosta-polszczyzna -g -a kiro-cli
+
+# GitHub Copilot
+npx skills add https://github.com/kashiash/prosta-polszczyzna --skill prosta-polszczyzna -g -a github-copilot
+
+# Windsurf
+npx skills add https://github.com/kashiash/prosta-polszczyzna --skill prosta-polszczyzna -g -a windsurf
+```
 
 ### Instalacja ręczna
 
-1. Skopiuj katalog `prosta-polszczyzna` do `~/.claude/skills/`
-2. Uruchom ponownie Claude Code.
+1. Sklonuj repozytorium:
+   ```bash
+   git clone https://github.com/kashiash/prosta-polszczyzna.git
+   ```
 
-## Struktura repo
+2. Skopiuj folder `prosta-polszczyzna` do katalogu skillów swojego asystenta:
 
-```
-awesome-agent-skills/
-└── prosta-polszczyzna/
-    ├── SKILL.md                          # definicja skilla
-    ├── prosta-polszczyzna.skill          # gotowy pakiet do instalacji (ZIP)
-    ├── install.ps1                       # instalator Windows
-    ├── install.sh                        # instalator Mac/Linux
-    └── references/
-        ├── slownik-substytucji.md        # 200+ zamienników słów
-        ├── przyklady-zdan.md             # przykłady przepisanych zdań
-        ├── checklist-i-walidacja.md      # 9-punktowy checklist + klasy Jasnopis
-        └── slownictwo-it.md             # terminologia IT po polsku
-```
+| Asystent | Katalog globalny | Katalog projektowy |
+|---|---|---|
+| Claude Code | `~/.claude/skills/` | `.claude/skills/` |
+| Cursor | `~/.cursor/skills/` | `.agents/skills/` |
+| Kiro CLI | `~/.kiro/skills/` | `.kiro/skills/` |
+| GitHub Copilot | `~/.copilot/skills/` | `.agents/skills/` |
+| Windsurf | `~/.codeium/windsurf/skills/` | `.windsurf/skills/` |
+| Gemini CLI | `~/.gemini/skills/` | `.agents/skills/` |
 
-## Jak dodać swój skill
+---
 
-1. Zrób fork tego repo.
-2. Utwórz katalog `nazwa-skilla/` z plikiem `SKILL.md`.
-3. Dodaj `install.ps1` i `install.sh` na wzór istniejącego skilla.
-4. Otwórz Pull Request z krótkim opisem, co skill robi i kiedy się włącza.
+## Co zawiera skill
 
-**Wymagania dla SKILL.md:**
-- Frontmatter z polami `name` i `description` (po angielsku — to widzi model przy wyborze skilla)
-- Opis w języku polskim lub angielskim — zależnie od przeznaczenia
-- Jasne kryterium wyzwalania (kiedy skill powinien, a kiedy nie powinien się włączyć)
+### Plik główny `SKILL.md`
+
+- **6 zasad standardu 2024** — Ustandaryzowane zasady prostego języka
+- **3 zasady architektury:** BLUF (wniosek na początku), Just-in-Time Context, Top-Down Bridge
+- **Klucze gramatyczne** — zdania ≤ 20 słów, strona czynna, bez imiesłowów `-ąc`
+- **Klucze słownikowe** — lista kancelaryzmów, archaizmów, modnisków i kalek z angielskiego
+- **Checklist walidacji** przed publikacją
+
+### Pliki referencyjne
+
+| Plik | Zawartość |
+|---|---|
+| `references/slownik-substytucji.md` | 200+ zamienników słów (kancelaryzmy → naturalny język) |
+| `references/przyklady-zdan.md` | Zanim i po — konkretne przepisania zdań |
+| `references/checklist-i-walidacja.md` | 9-punktowy checklist + klasy trudności Jasnopis |
+| `references/slownictwo-it.md` | Terminologia IT po polsku |
+
+---
+
+## Kiedy skill się włącza
+
+Skill aktywuje się automatycznie, gdy asystent pisze lub edytuje **dowolny tekst po polsku przeznaczony dla człowieka**:
+
+- e-maile i wiadomości (Slack, Teams)
+- dokumentacja techniczna
+- raporty i propozycje
+- komunikaty UI i komunikaty błędów
+- commit messages i opisy PR
+- posty i artykuły
+
+**Nie dotyczy:** prozy artystycznej, poezji, umów prawnych, tekstów stylizowanych.
+
+---
+
+## Przykład działania
+
+**Przed:**
+> W nawiązaniu do rozmowy telefonicznej z dnia wczorajszego, uprzejmie informuję, iż implementacja dedykowanego rozwiązania zostanie sfinalizowana w terminie obligatoryjnym.
+
+**Po:**
+> Wdrożymy rozwiązanie w wymaganym terminie — tak jak ustaliliśmy wczoraj przez telefon.
+
+---
+
+## Wymagania
+
+- Node.js (dla `npx skills add`)
+- Claude Code, Cursor, Kiro CLI lub inny asystent AI obsługujący skille
+
+---
+
+## Źródła
+
+Skill oparty na publicznie dostępnych zasobach:
+
+- **Ustandaryzowane zasady prostego języka** (2024) — https://jasnopis.pl
+- **Pracownia Prostej Polszczyzny UWr** — https://prostapolszczyzna.uwr.edu.pl/
+- **jasnopis.pl** — narzędzie do mierzenia trudności tekstu
+- **Encyklopedia prostej polszczyzny PZU** (2021)
+- **Norma ISO 24495-1** (2023) — międzynarodowy standard prostego języka
+
+---
+
+## Wkład i rozwój
+
+### Znalazłeś błąd lub masz pomysł?
+
+Otwórz issue: https://github.com/kashiash/prosta-polszczyzna/issues
+
+### Chcesz wnieść wkład?
+
+1. Zrób fork repozytorium
+2. Utwórz gałąź: `git checkout -b feature/twoja-zmiana`
+3. Zatwierdź zmiany: `git commit -am 'Dodaj: opis zmiany'`
+4. Wypchnij: `git push origin feature/twoja-zmiana`
+5. Otwórz Pull Request
+
+**Wskazówki dla kontrybutorów:**
+- Zmiany w słowniku substytucji — dodawaj przykłady użycia
+- Nowe przykłady zdań — podaj kontekst (formalny/techniczny/UI)
+- Aktualizacje standardu — podaj źródło
+
+---
 
 ## Licencja
 
-MIT
+MIT License — Copyright (c) 2024 [@kashiash](https://github.com/kashiash)
+
+Skill jest niezależną kompilacją edukacyjną. Wszelkie przytoczone materiały źródłowe zachowują oryginalne prawa autorskie.
+
+## Linki
+
+- **Repozytorium:** https://github.com/kashiash/prosta-polszczyzna
+- **Issues:** https://github.com/kashiash/prosta-polszczyzna/issues
+- **Autor:** [@kashiash](https://github.com/kashiash)
